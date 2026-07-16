@@ -31,8 +31,16 @@ const RippleCircle = ({ x, y, onDone }) => {
 };
 
 /* Bouton de base : scale au press + ripple visuel au point de tap.
-   Le `style` (ex: flex:1 dans une rangée) est appliqué au VRAI
-   conteneur extérieur, pas seulement au Pressable interne. */
+   `Pressable` est l'élément EXTÉRIEUR, sans style ni flex propre : il se
+   contente de mesurer/entourer son unique enfant. Le `style` de l'appelant
+   (dimensions, flex:1 dans une rangée, marges...) va directement sur
+   l'Animated.View qui est ce même enfant unique. L'ancienne version faisait
+   l'inverse (style sur l'extérieur, `flex:1` sur le Pressable intérieur) :
+   sur react-native-web, un `Pressable` en `flex:1` à l'intérieur d'un
+   conteneur qui n'a lui-même aucune taille explicite ne se dimensionne pas
+   de façon fiable — le bouton se retrouve visuellement écrasé, décalé ou
+   son contenu (texte, icône) tronqué, symptômes visibles sur quasiment tous
+   les boutons de l'app (ChromeBtn, GhostBtn, IconButton, bouton play...). */
 export const ScalePressable = ({ children, style, onPress, scaleTo = 0.92, disabled }) => {
   const scale = useSharedValue(1);
   const idRef = useRef(0);
@@ -50,12 +58,12 @@ export const ScalePressable = ({ children, style, onPress, scaleTo = 0.92, disab
   const removeRipple = (id) => setRipples((r) => r.filter((rp) => rp.id !== id));
 
   return (
-    <Animated.View style={[style, animatedStyle, { overflow: 'hidden' }]}>
-      <Pressable onPressIn={handlePressIn} onPressOut={handlePressOut} onPress={onPress} disabled={disabled} style={{ flex: 1 }}>
+    <Pressable onPressIn={handlePressIn} onPressOut={handlePressOut} onPress={onPress} disabled={disabled}>
+      <Animated.View style={[style, animatedStyle, { overflow: 'hidden' }, disabled && styles.disabledDim]}>
         {children}
         {ripples.map((r) => <RippleCircle key={r.id} x={r.x} y={r.y} onDone={() => removeRipple(r.id)} />)}
-      </Pressable>
-    </Animated.View>
+      </Animated.View>
+    </Pressable>
   );
 };
 
@@ -213,6 +221,7 @@ export const sharedStyles = StyleSheet.create({
 
 const styles = StyleSheet.create({
   ...sharedStyles,
+  disabledDim: { opacity: 0.28 },
   pill: { paddingVertical: 4, paddingHorizontal: 10, borderRadius: 99 },
   pillText: { fontSize: 10.5, fontWeight: '800' },
   btnChrome: { paddingVertical: 10, paddingHorizontal: 16, borderRadius: 99 },

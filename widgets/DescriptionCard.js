@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { colors } from '../shared/theme';
 import { GlassCard, IconButton, sharedStyles } from '../shared/UIKit';
+import { useToast } from '../shared/ToastProvider';
 
 /* data: { text } */
 export const DescriptionCard = ({ data, onEdit }) => (
@@ -17,9 +18,10 @@ export const DescriptionCard = ({ data, onEdit }) => (
 export const DESCRIPTION_DEMO = { text: 'Session H4 sur EURUSD, focus continuation de tendance après retest de zone de liquidité.' };
 
 export default function DescriptionCardDemo() {
+  const showToast = useToast();
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg, padding: 16, paddingTop: 60 }}>
-      <DescriptionCard data={DESCRIPTION_DEMO} onEdit={() => {}} />
+      <DescriptionCard data={DESCRIPTION_DEMO} onEdit={() => showToast('Description modifiable')} />
     </View>
   );
 }

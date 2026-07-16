@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { colors } from '../shared/theme';
 import { ScalePressable } from '../shared/UIKit';
+import { useToast } from '../shared/ToastProvider';
 
 /* data: { current, max, label } */
 export const AddCard = ({ data, onPress }) => (
@@ -25,9 +26,10 @@ const styles = StyleSheet.create({
 });
 
 export default function AddCardDemo() {
+  const showToast = useToast();
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg, padding: 16, paddingTop: 60, flexDirection: 'row', height: 160 }}>
-      <AddCard data={ADD_STRATEGY_DEMO} onPress={() => {}} />
+      <AddCard data={ADD_STRATEGY_DEMO} onPress={() => showToast('Nouvelle stratégie créée')} />
     </View>
   );
 }

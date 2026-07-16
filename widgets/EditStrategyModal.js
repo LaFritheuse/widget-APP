@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput } from 'react-native';
 import { colors } from '../shared/theme';
 import { BottomModal, IconButton, GhostBtn, ChromeBtn, sharedStyles } from '../shared/UIKit';
+import { useToast } from '../shared/ToastProvider';
 
 /* data: { name, description } */
 export const EditStrategyModal = ({ visible, data, onClose, onSave }) => {
@@ -30,9 +31,15 @@ export const EDIT_STRATEGY_DEMO = { name: '1R', description: '' };
 
 export default function EditStrategyModalDemo() {
   const [visible, setVisible] = useState(true);
+  const showToast = useToast();
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg }}>
-      <EditStrategyModal visible={visible} data={EDIT_STRATEGY_DEMO} onClose={() => setVisible(false)} onSave={() => setVisible(false)} />
+      <EditStrategyModal
+        visible={visible}
+        data={EDIT_STRATEGY_DEMO}
+        onClose={() => setVisible(false)}
+        onSave={() => { setVisible(false); showToast('Stratégie mise à jour'); }}
+      />
     </View>
   );
 }

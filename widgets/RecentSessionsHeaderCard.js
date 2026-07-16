@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { colors } from '../shared/theme';
 import { GlassCard, ChromeBtn, sharedStyles } from '../shared/UIKit';
+import { useToast } from '../shared/ToastProvider';
 
 /* data: { current, max } */
 export const RecentSessionsHeaderCard = ({ data, onNewSession }) => (
@@ -21,9 +22,10 @@ export const RecentSessionsHeaderCard = ({ data, onNewSession }) => (
 export const RECENT_SESSIONS_DEMO = { current: 3, max: 10 };
 
 export default function RecentSessionsHeaderCardDemo() {
+  const showToast = useToast();
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg, padding: 16, paddingTop: 60 }}>
-      <RecentSessionsHeaderCard data={RECENT_SESSIONS_DEMO} onNewSession={() => {}} />
+      <RecentSessionsHeaderCard data={RECENT_SESSIONS_DEMO} onNewSession={() => showToast('Nouvelle session créée')} />
     </View>
   );
 }

@@ -3,6 +3,7 @@ import { View, Text, Pressable, StyleSheet } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming, withSequence, Easing } from 'react-native-reanimated';
 import { BlurView } from 'expo-blur';
 import { colors } from '../shared/theme';
+import { useToast } from '../shared/ToastProvider';
 
 const TAB_ITEM_WIDTH = 56;
 
@@ -82,9 +83,10 @@ const styles = StyleSheet.create({
 
 export default function BottomTabBarDemo() {
   const [active, setActive] = React.useState('Dashboard');
+  const showToast = useToast();
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg }}>
-      <BottomTabBar activeTab={active} onTabPress={setActive} />
+      <BottomTabBar activeTab={active} onTabPress={(id) => { setActive(id); showToast(id); }} />
     </View>
   );
 }

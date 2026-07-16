@@ -3,9 +3,13 @@ import { View, Text, StyleSheet } from 'react-native';
 import Svg, { Polyline } from 'react-native-svg';
 import { colors } from '../shared/theme';
 import { GlassCard, GhostBtn, ChromeBtn, IconButton, ConfirmDeleteRow, sharedStyles } from '../shared/UIKit';
+import { useToast } from '../shared/ToastProvider';
 
+/* width/height explicites obligatoires : sans elles, react-native-svg (surtout
+   sur react-native-web) fait grandir le Svg pour remplir tout l'espace vertical
+   disponible du parent flex:1, ce qui écrase le reste de la carte hors écran. */
 const StratMiniChart = ({ points }) => (
-  <Svg viewBox="0 0 160 60" preserveAspectRatio="none" style={{ marginBottom: 8 }}>
+  <Svg width="100%" height={60} viewBox="0 0 160 60" preserveAspectRatio="none" style={{ marginBottom: 8 }}>
     <Polyline points={points} fill="none" stroke={colors.silver2} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
   </Svg>
 );
@@ -53,9 +57,15 @@ const styles = StyleSheet.create({
 });
 
 export default function StrategyCardDemo() {
+  const showToast = useToast();
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg, padding: 16, paddingTop: 60, flexDirection: 'row' }}>
-      <StrategyCard data={STRATEGY_DEMO} onEdit={() => {}} onAnalytics={() => {}} onDelete={() => {}} />
+      <StrategyCard
+        data={STRATEGY_DEMO}
+        onEdit={() => {}}
+        onAnalytics={() => {}}
+        onDelete={() => showToast('Stratégie supprimée')}
+      />
     </View>
   );
 }

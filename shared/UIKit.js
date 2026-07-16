@@ -59,12 +59,22 @@ export const ScalePressable = ({ children, style, onPress, scaleTo = 0.92, disab
   );
 };
 
+/* Le wrapper animé (entering) et le wrapper qui clippe (overflow:hidden pour
+   les coins arrondis du blur) sont deux Views distinctes : combiner un
+   transform animé et un overflow:hidden sur la MÊME View expose un vrai bug
+   de clipping sur react-native-web (le contenu ajouté après le premier
+   rendu — rangées de boutons, etc. — reste rogné à la hauteur du frame
+   initial). Le `style` (souvent des props de dimensionnement comme flex/
+   flexBasis à destination du parent en layout) va sur le wrapper animé, qui
+   est le vrai enfant flex du parent ; le clipping visuel reste isolé. */
 export const GlassCard = ({ children, style, delay = 0 }) => (
-  <Animated.View entering={FadeInDown.delay(delay).duration(380).easing(Easing.out(Easing.cubic))} style={[styles.cardWrapper, style]}>
-    <BlurView intensity={25} tint="dark" style={styles.cardBlur}>
-      <LinearGradient colors={['rgba(255,255,255,0.45)', 'transparent']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.cardHighlight} />
-      {children}
-    </BlurView>
+  <Animated.View entering={FadeInDown.delay(delay).duration(380).easing(Easing.out(Easing.cubic))} style={style}>
+    <View style={styles.cardWrapper}>
+      <BlurView intensity={25} tint="dark" style={styles.cardBlur}>
+        <LinearGradient colors={['rgba(255,255,255,0.45)', 'transparent']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.cardHighlight} />
+        {children}
+      </BlurView>
+    </View>
   </Animated.View>
 );
 
@@ -78,7 +88,7 @@ export const Pill = ({ text, tone }) => {
 
 export const IconButton = ({ icon, danger, onPress, size = 32 }) => (
   <ScalePressable onPress={onPress}>
-    <View style={[styles.iconBtn, { width: size, height: size, borderRadius: size / 2 }, danger && { borderColor: 'rgba(239,74,92,0.3)' }]}>
+    <View style={[styles.iconBtn, { width: size, height: size, borderRadius: size / 2 }]}>
       <Text style={[styles.iconBtnText, danger && { color: colors.red }]}>{icon}</Text>
     </View>
   </ScalePressable>

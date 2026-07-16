@@ -96,6 +96,10 @@ export const TIME_INVESTED_WEEKS = [
     { day: 'Dim', base: 9, top: 8 }, { day: 'Lun', base: 9, top: 5 }, { day: 'Mar', base: 8, top: 4 },
     { day: 'Mer', base: 8, top: 3 }, { day: 'Jeu', base: 10, top: 1, isToday: true }, { day: 'Ven', base: 14, top: 6 }, { day: 'Sam', base: 10, top: 4 },
   ]},
+  { label: '28 juin – 4 juil.', points: [
+    { day: 'Dim', base: 12, top: 5 }, { day: 'Lun', base: 20, top: 10 }, { day: 'Mar', base: 35, top: 5 },
+    { day: 'Mer', base: 22, top: 8 }, { day: 'Jeu', base: 10, top: 3, isToday: true }, { day: 'Ven', base: 5, top: 0 }, { day: 'Sam', base: 25, top: 6 },
+  ]},
 ];
 
 export const WIN_RATE_WEEKS = [
@@ -106,6 +110,10 @@ export const WIN_RATE_WEEKS = [
   { label: '5 juil. – 11 juil.', points: [
     { day: 'Dim', base: 60 }, { day: 'Lun', base: 55 }, { day: 'Mar', base: 50 }, { day: 'Mer', base: 66 },
     { day: 'Jeu', base: 72, isToday: true }, { day: 'Ven', base: 48 }, { day: 'Sam', base: 63 },
+  ]},
+  { label: '28 juin – 4 juil.', points: [
+    { day: 'Dim', base: 44 }, { day: 'Lun', base: 70 }, { day: 'Mar', base: 90 }, { day: 'Mer', base: 65 },
+    { day: 'Jeu', base: 52, isToday: true }, { day: 'Ven', base: 30 }, { day: 'Sam', base: 78 },
   ]},
 ];
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput } from 'react-native';
 import { colors } from '../shared/theme';
 import { BottomModal, IconButton, GhostBtn, ChromeBtn, Checkbox, Toggle, sharedStyles } from '../shared/UIKit';
+import { useToast } from '../shared/ToastProvider';
 
 /* data: { name, items: [{ text, checked, required }] } */
 export const EditChecklistModal = ({ visible, data, onClose, onSave }) => {
@@ -55,9 +56,15 @@ export const EDIT_CHECKLIST_DEMO = {
 
 export default function EditChecklistModalDemo() {
   const [visible, setVisible] = useState(true);
+  const showToast = useToast();
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg }}>
-      <EditChecklistModal visible={visible} data={EDIT_CHECKLIST_DEMO} onClose={() => setVisible(false)} onSave={() => setVisible(false)} />
+      <EditChecklistModal
+        visible={visible}
+        data={EDIT_CHECKLIST_DEMO}
+        onClose={() => setVisible(false)}
+        onSave={() => { setVisible(false); showToast('Checklist enregistrée'); }}
+      />
     </View>
   );
 }

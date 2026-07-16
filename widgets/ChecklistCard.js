@@ -27,7 +27,6 @@ export const CHECKLIST_DEMO = {
   items: [
     { text: 'Biais Daily identifié', checked: true },
     { text: 'Structure H1 dans le même sens que le biais', checked: true },
-    { text: 'Pas de liquidité', checked: false },
   ],
 };
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, Pressable, StyleSheet, SafeAreaView, Platform, StatusBar } from 'react-native';
 import { colors } from './shared/theme';
+import { ToastProvider } from './shared/ToastProvider';
 
 import WeekChartWidgetDemo from './widgets/WeekChartWidget';
 import TradesTakenCardDemo from './widgets/TradesTakenCard';
@@ -50,7 +51,7 @@ const WIDGETS = [
   { id: 'tabbar', label: 'Bottom Tab Bar', Comp: BottomTabBarDemo },
 ];
 
-export default function App() {
+function AppInner() {
   const [activeId, setActiveId] = useState(WIDGETS[0].id);
   const Active = WIDGETS.find((w) => w.id === activeId).Comp;
 
@@ -67,6 +68,14 @@ export default function App() {
         <Active />
       </View>
     </SafeAreaView>
+  );
+}
+
+export default function App() {
+  return (
+    <ToastProvider>
+      <AppInner />
+    </ToastProvider>
   );
 }
 

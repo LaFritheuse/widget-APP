@@ -3,14 +3,15 @@ import { View, Text, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { colors } from '../shared/theme';
 import { ScalePressable, GlassCard, GhostBtn, IconButton, ConfirmDeleteRow, sharedStyles } from '../shared/UIKit';
+import { useToast } from '../shared/ToastProvider';
 
 /* data: { name, symbol, dateStart, dateEnd, remainingDays, progressPct } */
-export const SessionRow = ({ data, onView, onStats, onEdit, onDelete }) => {
+export const SessionRow = ({ data, onView, onPlay, onStats, onEdit, onCopy, onDelete }) => {
   const [confirming, setConfirming] = useState(false);
   return (
     <GlassCard delay={300}>
       <View style={styles.srow}>
-        <ScalePressable onPress={onView} style={styles.playBtnWrap}>
+        <ScalePressable onPress={onPlay} style={styles.playBtnWrap}>
           <LinearGradient colors={[colors.silver1, colors.silver2]} style={styles.playBtn}><Text style={{ fontSize: 12 }}>▶</Text></LinearGradient>
         </ScalePressable>
         <View style={{ flex: 1 }}>
@@ -24,6 +25,7 @@ export const SessionRow = ({ data, onView, onStats, onEdit, onDelete }) => {
           <GhostBtn text="View Session" onPress={onView} />
           <IconButton icon="📊" onPress={onStats} />
           <IconButton icon="✎" onPress={onEdit} />
+          <IconButton icon="⧉" onPress={onCopy} />
           <IconButton icon="🗑" danger onPress={() => setConfirming(true)} />
         </View>
       )}
@@ -55,9 +57,18 @@ const styles = StyleSheet.create({
 });
 
 export default function SessionRowDemo() {
+  const showToast = useToast();
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg, padding: 16, paddingTop: 60 }}>
-      <SessionRow data={SESSION_ROW_DEMO} onView={() => {}} onStats={() => {}} onEdit={() => {}} onDelete={() => {}} />
+      <SessionRow
+        data={SESSION_ROW_DEMO}
+        onView={() => {}}
+        onPlay={() => showToast('Session lancée ▶')}
+        onStats={() => showToast('Analytics ouvertes')}
+        onEdit={() => showToast('Mode édition')}
+        onCopy={() => showToast('Session dupliquée')}
+        onDelete={() => showToast('Session supprimée')}
+      />
     </View>
   );
 }

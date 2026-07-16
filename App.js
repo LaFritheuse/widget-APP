@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, Pressable, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, ScrollView, Pressable, StyleSheet, SafeAreaView, Platform, StatusBar } from 'react-native';
 import { colors } from './shared/theme';
 
 import WeekChartWidgetDemo from './widgets/WeekChartWidget';
@@ -55,7 +55,7 @@ export default function App() {
   const Active = WIDGETS.find((w) => w.id === activeId).Comp;
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg, paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 }}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.picker} contentContainerStyle={{ gap: 8, paddingHorizontal: 12 }}>
         {WIDGETS.map((w) => (
           <Pressable key={w.id} onPress={() => setActiveId(w.id)} style={[styles.chip, activeId === w.id && styles.chipActive]}>
@@ -71,7 +71,7 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  picker: { flexGrow: 0, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.08)' },
+  picker: { flexGrow: 0, paddingTop: 18, paddingBottom: 10, borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.08)' },
   chip: { paddingVertical: 8, paddingHorizontal: 14, borderRadius: 99, backgroundColor: 'rgba(255,255,255,0.05)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.08)' },
   chipActive: { backgroundColor: colors.silver1, borderColor: colors.silver1 },
   chipTxt: { color: colors.textDim, fontSize: 11.5, fontWeight: '700' },

@@ -27,22 +27,18 @@ const TabIconComponent = ({ icon, isActive, animType }) => {
     return {};
   });
 
-  /* Boîte de taille fixe pour toutes les icônes + fontSize réduite pour
-     l'emoji couleur 📊 qui rend naturellement plus gros que les symboles
-     monochromes (▦ ▤ ⟲ ✓) — évite les tailles visuellement incohérentes. */
-  const isColorEmoji = icon === '📊';
   return (
     <Animated.View style={[styles.tabIconBox, animatedStyle]}>
-      <Text style={[styles.tabIcon, isColorEmoji && styles.tabIconEmoji, isActive && { color: colors.silver1 }]}>{icon}</Text>
+      <Text style={styles.tabIcon}>{icon}</Text>
     </Animated.View>
   );
 };
 
 export const TAB_DEFS = [
-  { id: 'Dashboard', icon: '▦', anim: 'pulse' },
-  { id: 'Sessions', icon: '▤', anim: 'shake' },
-  { id: 'Strategies', icon: '⟲', anim: 'spin' },
-  { id: 'Checklists', icon: '✓', anim: 'check' },
+  { id: 'Dashboard', icon: '🏠', anim: 'pulse' },
+  { id: 'Sessions', icon: '📁', anim: 'shake' },
+  { id: 'Strategies', icon: '🔄', anim: 'spin' },
+  { id: 'Checklists', icon: '✅', anim: 'check' },
   { id: 'Analytics', icon: '📊', anim: 'bars' },
 ];
 
@@ -75,8 +71,7 @@ const styles = StyleSheet.create({
   tabbar: { flexDirection: 'row', backgroundColor: 'rgba(18,19,22,0.6)', borderRadius: 99, padding: 6, borderWidth: 1, borderColor: 'rgba(255,255,255,0.09)', overflow: 'hidden' },
   tabItem: { width: TAB_ITEM_WIDTH, alignItems: 'center', paddingVertical: 8, zIndex: 2 },
   tabIconBox: { width: 20, height: 20, alignItems: 'center', justifyContent: 'center', marginBottom: 4 },
-  tabIcon: { fontSize: 16, color: colors.textDim, textAlign: 'center', lineHeight: 20 },
-  tabIconEmoji: { fontSize: 13 },
+  tabIcon: { fontSize: 13, textAlign: 'center', lineHeight: 20 },
   tabLabel: { fontSize: 8, fontWeight: '700', color: colors.textDim },
   tabIndicator: { position: 'absolute', top: 6, bottom: 6, left: 6, width: TAB_ITEM_WIDTH, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 99, zIndex: 1 },
 });

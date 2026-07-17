@@ -34,7 +34,7 @@ export const EditChecklistModal = ({ visible, data, onClose, onSave }) => {
           <Text style={{ fontSize: 12.5, color: '#fff', flex: 1 }}>{item.text}</Text>
           <Text style={{ fontSize: 10, color: colors.textDim }}>Required?</Text>
           <Toggle on={item.required} onToggle={() => toggleRequired(i)} />
-          <IconButton icon="🗑" danger size={26} onPress={() => removeItem(i)} />
+          <IconButton icon="🗑️" danger size={26} onPress={() => removeItem(i)} />
         </View>
       ))}
       <View style={sharedStyles.modalActions}>

@@ -78,8 +78,8 @@ export const ScalePressable = ({ children, style, onPress, scaleTo = 0.92, disab
 export const GlassCard = ({ children, style, delay = 0 }) => (
   <Animated.View entering={FadeInDown.delay(delay).duration(380).easing(Easing.out(Easing.cubic))} style={style}>
     <View style={styles.cardWrapper}>
-      <BlurView intensity={25} tint="dark" style={styles.cardBlur}>
-        <LinearGradient colors={['rgba(255,255,255,0.45)', 'transparent']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.cardHighlight} />
+      <BlurView intensity={25} tint="light" style={styles.cardBlur}>
+        <LinearGradient colors={['transparent', 'rgba(255,255,255,0.45)', 'transparent']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.cardHighlight} />
         {children}
       </BlurView>
     </View>

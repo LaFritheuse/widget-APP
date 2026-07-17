@@ -12,7 +12,7 @@ export const SessionRow = ({ data, onView, onPlay, onStats, onEdit, onCopy, onDe
     <GlassCard delay={300}>
       <View style={styles.srow}>
         <ScalePressable onPress={onPlay} style={styles.playBtnWrap}>
-          <LinearGradient colors={[colors.silver1, colors.silver2]} style={styles.playBtn}><Text style={{ fontSize: 12 }}>▶</Text></LinearGradient>
+          <LinearGradient colors={[colors.silver1, colors.silver2]} style={styles.playBtn}><Text style={{ fontSize: 12 }}>▶️</Text></LinearGradient>
         </ScalePressable>
         <View style={{ flex: 1 }}>
           <Text style={sharedStyles.srowName}>{data.name}</Text>
@@ -24,9 +24,9 @@ export const SessionRow = ({ data, onView, onPlay, onStats, onEdit, onCopy, onDe
         <View style={styles.srowActions}>
           <GhostBtn text="View Session" onPress={onView} />
           <IconButton icon="📊" onPress={onStats} />
-          <IconButton icon="✎" onPress={onEdit} />
-          <IconButton icon="⧉" onPress={onCopy} />
-          <IconButton icon="🗑" danger onPress={() => setConfirming(true)} />
+          <IconButton icon="✏️" onPress={onEdit} />
+          <IconButton icon="📋" onPress={onCopy} />
+          <IconButton icon="🗑️" danger onPress={() => setConfirming(true)} />
         </View>
       )}
       <ConfirmDeleteRow
@@ -63,7 +63,7 @@ export default function SessionRowDemo() {
       <SessionRow
         data={SESSION_ROW_DEMO}
         onView={() => {}}
-        onPlay={() => showToast('Session lancée ▶')}
+        onPlay={() => showToast('Session lancée ▶️')}
         onStats={() => showToast('Analytics ouvertes')}
         onEdit={() => showToast('Mode édition')}
         onCopy={() => showToast('Session dupliquée')}

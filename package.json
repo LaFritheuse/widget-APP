@@ -2,5 +2,13 @@
   "name": "widget-app",
   "version": "1.0.0",
   "main": "App.js",
-  "dependencies": {}
+  "dependencies": {
+    "expo": "*",
+    "expo-blur": "*",
+    "expo-linear-gradient": "*",
+    "react": "*",
+    "react-native": "*",
+    "react-native-reanimated": "*",
+    "react-native-svg": "*"
+  }
 }

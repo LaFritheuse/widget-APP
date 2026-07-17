@@ -69,7 +69,7 @@ export const BottomTabBar = ({ activeTab, onTabPress }) => {
 
 const styles = StyleSheet.create({
   tabbarWrap: { position: 'absolute', bottom: 20, left: 0, right: 0, alignItems: 'center' },
-  tabbar: { flexDirection: 'row', backgroundColor: 'rgba(18,19,22,0.6)', borderRadius: 99, padding: 6, borderWidth: 1, borderColor: 'rgba(255,255,255,0.09)', overflow: 'hidden' },
+  tabbar: { flexDirection: 'row', backgroundColor: 'rgba(18,19,22,0.72)', borderRadius: 99, padding: 6, borderWidth: 1, borderColor: 'rgba(255,255,255,0.09)', overflow: 'hidden' },
   tabItem: { width: TAB_ITEM_WIDTH, alignItems: 'center', paddingVertical: 8, zIndex: 2 },
   tabIconBox: { width: 20, height: 20, alignItems: 'center', justifyContent: 'center', marginBottom: 4 },
   tabLabel: { fontSize: 8, fontWeight: '700', color: colors.textDim },

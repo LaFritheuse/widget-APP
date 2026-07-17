@@ -14,7 +14,7 @@ export const Toast = ({ visible, message }) => {
   const animStyle = useAnimatedStyle(() => ({ opacity: op.value, transform: [{ translateY: ty.value }] }));
   return (
     <Animated.View pointerEvents="none" style={[styles.toast, animStyle]}>
-      <BlurView intensity={30} tint="dark" style={{ padding: 10, paddingHorizontal: 16, borderRadius: 99 }}>
+      <BlurView intensity={30} tint="dark" style={styles.toastBlur}>
         <Text style={styles.toastTxt}>{message}</Text>
       </BlurView>
     </Animated.View>
@@ -22,6 +22,7 @@ export const Toast = ({ visible, message }) => {
 };
 
 const styles = StyleSheet.create({
-  toast: { position: 'absolute', bottom: 100, alignSelf: 'center', zIndex: 100, overflow: 'hidden', borderRadius: 99 },
+  toast: { position: 'absolute', bottom: 100, alignSelf: 'center', zIndex: 100, overflow: 'hidden', borderRadius: 99, borderWidth: 1, borderColor: 'rgba(255,255,255,0.12)' },
+  toastBlur: { backgroundColor: 'rgba(20,21,24,0.75)', padding: 10, paddingHorizontal: 16, borderRadius: 99 },
   toastTxt: { color: colors.silver1, fontSize: 12, fontWeight: '700' },
 });

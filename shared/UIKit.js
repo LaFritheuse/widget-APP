@@ -200,8 +200,10 @@ export const ConfirmDeleteRow = ({ visible, label, onCancel, onConfirm }) => {
 export const BottomModal = ({ visible, onClose, children }) => (
   <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
     <Pressable style={styles.modalOverlay} onPress={onClose}>
-      <Pressable style={styles.modalBody} onPress={(e) => e.stopPropagation()}>
-        {children}
+      <Pressable style={styles.modalBodyWrap} onPress={(e) => e.stopPropagation()}>
+        <BlurView intensity={40} tint="dark" style={styles.modalBody}>
+          {children}
+        </BlurView>
       </Pressable>
     </Pressable>
   </Modal>
@@ -254,5 +256,6 @@ const styles = StyleSheet.create({
   confirmYesFill: { position: 'absolute', left: 0, top: 0, bottom: 0, backgroundColor: 'rgba(239,74,92,0.35)' },
   confirmYesTxt: { color: colors.red, fontSize: 11.5, fontWeight: '800' },
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.6)', justifyContent: 'flex-end' },
-  modalBody: { backgroundColor: '#0e0f12', borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: 20, paddingBottom: 30, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' },
+  modalBodyWrap: { borderTopLeftRadius: 24, borderTopRightRadius: 24, overflow: 'hidden', borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' },
+  modalBody: { backgroundColor: 'rgba(14,15,18,0.75)', padding: 20, paddingBottom: 30 },
 });

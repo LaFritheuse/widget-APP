@@ -14,6 +14,10 @@ import SessionHeaderCardDemo from './widgets/SessionHeaderCard';
 import DescriptionCardDemo from './widgets/DescriptionCard';
 import ChartCarouselDemo from './widgets/ChartCarousel';
 import StatTilesRowDemo from './widgets/StatTilesRow';
+import AdvancedStatsRowDemo from './widgets/AdvancedStatsRow';
+import StreakStatsCardDemo from './widgets/StreakStatsCard';
+import RMultipleHistogramDemo from './widgets/RMultipleHistogram';
+import PnLCalendarHeatmapDemo from './widgets/PnLCalendarHeatmap';
 import RecentTradesTableDemo from './widgets/RecentTradesTable';
 import StrategyCardDemo from './widgets/StrategyCard';
 import AddCardDemo from './widgets/AddCard';
@@ -42,6 +46,10 @@ const WIDGETS = [
   { id: 'description', label: 'Description', Comp: DescriptionCardDemo },
   { id: 'carousel', label: 'Chart Carousel', Comp: ChartCarouselDemo },
   { id: 'stat-tiles', label: 'Stat Tiles', Comp: StatTilesRowDemo },
+  { id: 'advanced-stats', label: 'Advanced Stats', Comp: AdvancedStatsRowDemo },
+  { id: 'streaks', label: 'Streak Stats', Comp: StreakStatsCardDemo },
+  { id: 'r-multiple', label: 'R-Multiple Distribution', Comp: RMultipleHistogramDemo },
+  { id: 'pnl-calendar', label: 'P&L Calendar', Comp: PnLCalendarHeatmapDemo },
   { id: 'recent-trades', label: 'Recent Trades', Comp: RecentTradesTableDemo },
   { id: 'strategy', label: 'Strategy Card', Comp: StrategyCardDemo },
   { id: 'add-card', label: 'Add Card', Comp: AddCardDemo },

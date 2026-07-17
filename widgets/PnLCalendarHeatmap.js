@@ -103,19 +103,22 @@ const demoMonthData = (year, month) => {
 };
 
 const styles = StyleSheet.create({
-  head: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 },
+  head: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },
   navBtn: { width: 32, height: 32, borderRadius: 16, backgroundColor: colors.bgInput, borderWidth: 1, borderColor: 'rgba(255,255,255,0.08)', justifyContent: 'center', alignItems: 'center' },
   monthLabel: { fontSize: 13, fontWeight: '700', color: colors.silver1 },
   weekRow: { flexDirection: 'row' },
-  weekLabel: { flexBasis: '14.28%', textAlign: 'center', fontSize: 9.5, color: colors.textDim, fontWeight: '700', marginBottom: 6 },
+  weekLabel: { flexBasis: '14.28%', textAlign: 'center', fontSize: 9, color: colors.textDim, fontWeight: '700', marginBottom: 4 },
   grid: { flexDirection: 'row', flexWrap: 'wrap' },
-  cellWrap: { flexBasis: '14.28%', aspectRatio: 1, padding: 2 },
-  cell: { flex: 1, borderRadius: 8, alignItems: 'center', justifyContent: 'center' },
+  /* Hauteur fixe (indépendante de la largeur) plutôt que aspectRatio:1 —
+     des cases carrées sur 6 lignes dépassaient l'écran ; des cases plus
+     basses gardent le calendrier lisible tout en tenant sur un écran. */
+  cellWrap: { flexBasis: '14.28%', height: 32, padding: 1.5 },
+  cell: { flex: 1, borderRadius: 7, alignItems: 'center', justifyContent: 'center' },
   cellToday: { borderWidth: 1, borderColor: colors.chrome },
-  cellDay: { fontSize: 10.5, color: colors.silver2, fontWeight: '600' },
+  cellDay: { fontSize: 9, color: colors.silver2, fontWeight: '600' },
   cellDayToday: { color: colors.chrome, fontWeight: '800' },
-  cellPnl: { fontSize: 8, fontWeight: '700', marginTop: 1 },
-  footer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 14, paddingTop: 12, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.08)' },
+  cellPnl: { fontSize: 10.5, fontWeight: '800', marginTop: 1 },
+  footer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10, paddingTop: 10, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.08)' },
   footerLbl: { fontSize: 10.5, color: colors.textDim, fontWeight: '700', textTransform: 'uppercase' },
   footerVal: { fontSize: 15, fontWeight: '800' },
 });

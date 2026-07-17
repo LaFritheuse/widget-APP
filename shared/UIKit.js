@@ -78,18 +78,11 @@ export const ScalePressable = ({ children, style, onPress, scaleTo = 0.92, disab
    initial). Le `style` (souvent des props de dimensionnement comme flex/
    flexBasis à destination du parent en layout) va sur le wrapper animé, qui
    est le vrai enfant flex du parent ; le clipping visuel reste isolé. */
-/* `tint`/`centerHighlight` restent optionnels et gardent le rendu d'origine
-   par défaut (tint sombre, ligne de reflet qui part de la gauche) — seul
-   StatTilesRow passe les variantes (tint clair, reflet centré) pour ses
-   tuiles étroites, sans changer le rendu des autres cartes. */
-export const GlassCard = ({ children, style, delay = 0, tint = 'dark', centerHighlight = false }) => (
+export const GlassCard = ({ children, style, delay = 0 }) => (
   <Animated.View entering={FadeInDown.delay(delay).duration(380).easing(Easing.out(Easing.cubic))} style={style}>
     <View style={styles.cardWrapper}>
-      <BlurView intensity={25} tint={tint} style={styles.cardBlur}>
-        <LinearGradient
-          colors={centerHighlight ? ['transparent', 'rgba(255,255,255,0.45)', 'transparent'] : ['rgba(255,255,255,0.45)', 'transparent']}
-          start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.cardHighlight}
-        />
+      <BlurView intensity={25} tint="dark" style={styles.cardBlur}>
+        <LinearGradient colors={['rgba(255,255,255,0.45)', 'transparent']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.cardHighlight} />
         {children}
       </BlurView>
     </View>

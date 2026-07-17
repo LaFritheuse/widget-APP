@@ -19,7 +19,7 @@ export const AdvancedStatsRow = ({ data }) => {
   return (
     <View style={styles.row3}>
       {tiles.map((t) => (
-        <GlassCard key={t.label} delay={0} tint="light" centerHighlight style={{ flexBasis: '31%', paddingVertical: 12, paddingHorizontal: 10 }}>
+        <GlassCard key={t.label} delay={0} style={{ flexBasis: '31%', paddingVertical: 12, paddingHorizontal: 10 }}>
           <Text style={[sharedStyles.cardLabel, { marginBottom: 4 }]}>{t.label}</Text>
           <Text style={[sharedStyles.tileValue, t.tone === 'up' && { color: colors.green }, t.tone === 'down' && { color: colors.red }]}>{t.value}</Text>
         </GlassCard>

@@ -18,6 +18,8 @@ import AdvancedStatsRowDemo from './widgets/AdvancedStatsRow';
 import StreakStatsCardDemo from './widgets/StreakStatsCard';
 import RMultipleHistogramDemo from './widgets/RMultipleHistogram';
 import PnLCalendarHeatmapDemo from './widgets/PnLCalendarHeatmap';
+import MaxDrawdownCardDemo from './widgets/MaxDrawdownCard';
+import SessionPerformanceCardDemo from './widgets/SessionPerformanceCard';
 import RecentTradesTableDemo from './widgets/RecentTradesTable';
 import StrategyCardDemo from './widgets/StrategyCard';
 import AddCardDemo from './widgets/AddCard';
@@ -50,6 +52,8 @@ const WIDGETS = [
   { id: 'streaks', label: 'Streak Stats', Comp: StreakStatsCardDemo },
   { id: 'r-multiple', label: 'R-Multiple Distribution', Comp: RMultipleHistogramDemo },
   { id: 'pnl-calendar', label: 'P&L Calendar', Comp: PnLCalendarHeatmapDemo },
+  { id: 'drawdown', label: 'Max Drawdown', Comp: MaxDrawdownCardDemo },
+  { id: 'session-perf', label: 'Session Performance', Comp: SessionPerformanceCardDemo },
   { id: 'recent-trades', label: 'Recent Trades', Comp: RecentTradesTableDemo },
   { id: 'strategy', label: 'Strategy Card', Comp: StrategyCardDemo },
   { id: 'add-card', label: 'Add Card', Comp: AddCardDemo },

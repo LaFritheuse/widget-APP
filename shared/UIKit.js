@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Pressable, Modal } from 'react-native';
 import Animated, {
-  useSharedValue, useAnimatedStyle, withSpring, withTiming, Easing, FadeInDown, runOnJS,
+  useSharedValue, useAnimatedStyle, withTiming, Easing, FadeInDown, runOnJS,
 } from 'react-native-reanimated';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -48,14 +48,16 @@ export const ScalePressable = ({ children, style, onPress, scaleTo = 0.92, disab
   const [ripples, setRipples] = useState([]);
   const animatedStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
 
+  /* transform 0.1s ease, comme le CSS du HTML — un withTiming court et sans
+     rebond plutôt qu'un spring, qui donnait un effet de "rebond" trop lent. */
   const handlePressIn = (e) => {
     if (disabled) return;
-    scale.value = withSpring(scaleTo, { damping: 15, stiffness: 300 });
+    scale.value = withTiming(scaleTo, { duration: 100, easing: Easing.out(Easing.quad) });
     const { locationX, locationY } = e.nativeEvent;
     const id = idRef.current++;
     setRipples((r) => [...r, { id, x: locationX, y: locationY }]);
   };
-  const handlePressOut = () => { if (!disabled) scale.value = withSpring(1, { damping: 12, stiffness: 250 }); };
+  const handlePressOut = () => { if (!disabled) scale.value = withTiming(1, { duration: 100, easing: Easing.out(Easing.quad) }); };
   const removeRipple = (id) => setRipples((r) => r.filter((rp) => rp.id !== id));
 
   return (
@@ -76,11 +78,18 @@ export const ScalePressable = ({ children, style, onPress, scaleTo = 0.92, disab
    initial). Le `style` (souvent des props de dimensionnement comme flex/
    flexBasis à destination du parent en layout) va sur le wrapper animé, qui
    est le vrai enfant flex du parent ; le clipping visuel reste isolé. */
-export const GlassCard = ({ children, style, delay = 0 }) => (
+/* `tint`/`centerHighlight` restent optionnels et gardent le rendu d'origine
+   par défaut (tint sombre, ligne de reflet qui part de la gauche) — seul
+   StatTilesRow passe les variantes (tint clair, reflet centré) pour ses
+   tuiles étroites, sans changer le rendu des autres cartes. */
+export const GlassCard = ({ children, style, delay = 0, tint = 'dark', centerHighlight = false }) => (
   <Animated.View entering={FadeInDown.delay(delay).duration(380).easing(Easing.out(Easing.cubic))} style={style}>
     <View style={styles.cardWrapper}>
-      <BlurView intensity={25} tint="light" style={styles.cardBlur}>
-        <LinearGradient colors={['transparent', 'rgba(255,255,255,0.45)', 'transparent']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.cardHighlight} />
+      <BlurView intensity={25} tint={tint} style={styles.cardBlur}>
+        <LinearGradient
+          colors={centerHighlight ? ['transparent', 'rgba(255,255,255,0.45)', 'transparent'] : ['rgba(255,255,255,0.45)', 'transparent']}
+          start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.cardHighlight}
+        />
         {children}
       </BlurView>
     </View>

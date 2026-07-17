@@ -109,17 +109,16 @@ const styles = StyleSheet.create({
   weekRow: { flexDirection: 'row' },
   weekLabel: { flexBasis: '14.28%', textAlign: 'center', fontSize: 9, color: colors.textDim, fontWeight: '700', marginBottom: 4 },
   grid: { flexDirection: 'row', flexWrap: 'wrap' },
-  /* La colonne (14.28% de large) reste alignée sous son en-tête de jour,
-     mais la case visible à l'intérieur est un carré de taille FIXE, plus
-     petit que la colonne — carré garanti quelle que soit la largeur de
-     l'écran, au lieu d'un carré qui remplit toute la colonne (trop gros)
-     ou d'un rectangle aplati (pas carré). */
-  cellWrap: { flexBasis: '14.28%', height: 40, alignItems: 'center', justifyContent: 'center' },
-  cell: { width: 30, height: 30, borderRadius: 7, alignItems: 'center', justifyContent: 'center' },
-  cellToday: { borderWidth: 1, borderColor: colors.chrome },
-  cellDay: { fontSize: 8.5, color: colors.silver2, fontWeight: '600' },
+  /* Case = toute la colonne (14.28% de large, aspectRatio:1 pour rester
+     carrée), sans marge ni padding : les cases se touchent de tous les
+     côtés comme une vraie mosaïque de calendrier, au lieu de petits carrés
+     flottants avec des grands vides entre les lignes. */
+  cellWrap: { flexBasis: '14.28%', aspectRatio: 1 },
+  cell: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  cellToday: { borderWidth: 1.5, borderColor: colors.chrome },
+  cellDay: { fontSize: 11, color: colors.silver2, fontWeight: '600' },
   cellDayToday: { color: colors.chrome, fontWeight: '800' },
-  cellPnl: { fontSize: 8.5, fontWeight: '800', marginTop: 1 },
+  cellPnl: { fontSize: 11, fontWeight: '800', marginTop: 2 },
   footer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10, paddingTop: 10, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.08)' },
   footerLbl: { fontSize: 10.5, color: colors.textDim, fontWeight: '700', textTransform: 'uppercase' },
   footerVal: { fontSize: 15, fontWeight: '800' },

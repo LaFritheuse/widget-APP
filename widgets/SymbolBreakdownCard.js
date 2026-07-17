@@ -22,19 +22,26 @@ const HorizontalBarRow = ({ label, pct, count }) => {
   );
 };
 
-/* data: [{ symbol, pct, count }] */
-export const SymbolBreakdownCard = ({ data }) => (
-  <GlassCard delay={200}>
-    <Text style={sharedStyles.cardLabel}>TRADES BY SYMBOL</Text>
-    {data.map((row) => <HorizontalBarRow key={row.symbol} label={row.symbol} pct={row.pct} count={row.count} />)}
-  </GlassCard>
-);
+/* data: [{ symbol, count }] — count brut par symbole ; le widget normalise
+   lui-même la largeur des barres par rapport au plus gros total, l'app n'a
+   pas besoin de calculer un pourcentage. */
+export const SymbolBreakdownCard = ({ data }) => {
+  const maxCount = Math.max(1, ...data.map((row) => row.count));
+  return (
+    <GlassCard delay={200}>
+      <Text style={sharedStyles.cardLabel}>TRADES BY SYMBOL</Text>
+      {data.map((row) => (
+        <HorizontalBarRow key={row.symbol} label={row.symbol} pct={(row.count / maxCount) * 96} count={row.count} />
+      ))}
+    </GlassCard>
+  );
+};
 
 export const SYMBOLS_DEMO = [
-  { symbol: 'EURUSD', pct: 96, count: 82 },
-  { symbol: 'GBPUSD', pct: 29, count: 24 },
-  { symbol: 'XAUUSD', pct: 17, count: 14 },
-  { symbol: 'USDJPY', pct: 8, count: 7 },
+  { symbol: 'EURUSD', count: 82 },
+  { symbol: 'GBPUSD', count: 24 },
+  { symbol: 'XAUUSD', count: 14 },
+  { symbol: 'USDJPY', count: 7 },
 ];
 
 const styles = StyleSheet.create({

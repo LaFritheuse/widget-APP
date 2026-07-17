@@ -3,15 +3,17 @@ import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { colors } from '../shared/theme';
 import { GlassCard, ChevronIcon, sharedStyles } from '../shared/UIKit';
 import { useToast } from '../shared/ToastProvider';
+import { formatThousands } from '../shared/format';
 
-/* data: { name, symbol, balance } */
+/* data: { name, symbol, balance } — balance = NOMBRE brut (10467.13),
+   le widget gère seul le séparateur de milliers. */
 export const SelectSessionCard = ({ data, open, onPress }) => (
   <Pressable onPress={onPress}>
     <GlassCard delay={350}>
       <View style={styles.row}>
         <View>
           <Text style={sharedStyles.srowName}>{data.name}</Text>
-          <Text style={sharedStyles.srowMeta}>{data.symbol} · Balance {data.balance}</Text>
+          <Text style={sharedStyles.srowMeta}>{data.symbol} · Balance {formatThousands(data.balance)}</Text>
         </View>
         <ChevronIcon direction={open ? 'up' : 'down'} />
       </View>
@@ -19,7 +21,7 @@ export const SelectSessionCard = ({ data, open, onPress }) => (
   </Pressable>
 );
 
-export const SELECT_SESSION_DEMO = { name: 'H4', symbol: 'EURUSD', balance: '10,467.13' };
+export const SELECT_SESSION_DEMO = { name: 'H4', symbol: 'EURUSD', balance: 10467.13 };
 
 const styles = StyleSheet.create({
   row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },

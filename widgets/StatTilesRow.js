@@ -2,16 +2,19 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { colors } from '../shared/theme';
 import { GlassCard, sharedStyles } from '../shared/UIKit';
+import { formatSignedMoney, formatPct } from '../shared/format';
 
-/* data: { totalPnl, winRate, rr, monthGL, weekGL, dailyGL } */
+/* data: { totalPnl, winRate, rr, monthGL, weekGL, dailyGL } — tous des
+   NOMBRES bruts (ex: totalPnl: 101.49, winRate: 33.33), jamais de chaînes
+   déjà mises en forme : le widget s'occupe seul du $/%/signe. */
 export const StatTilesRow = ({ data }) => {
   const tiles = [
-    { label: 'Total PnL', value: data.totalPnl },
-    { label: 'Win Rate', value: data.winRate },
-    { label: 'R/R', value: data.rr },
-    { label: 'Month G/L', value: data.monthGL },
-    { label: 'Week G/L', value: data.weekGL },
-    { label: 'Daily G/L', value: data.dailyGL },
+    { label: 'Total PnL', value: formatSignedMoney(data.totalPnl) },
+    { label: 'Win Rate', value: formatPct(data.winRate) },
+    { label: 'R/R', value: data.rr.toFixed(2) },
+    { label: 'Month G/L', value: formatSignedMoney(data.monthGL) },
+    { label: 'Week G/L', value: formatSignedMoney(data.weekGL) },
+    { label: 'Daily G/L', value: formatSignedMoney(data.dailyGL) },
   ];
   return (
     <View style={styles.row3}>
@@ -25,7 +28,7 @@ export const StatTilesRow = ({ data }) => {
   );
 };
 
-export const STAT_TILES_DEMO = { totalPnl: '$101.49', winRate: '33.33%', rr: '3.05', monthGL: '$33.83', weekGL: '$16.92', dailyGL: '$12.69' };
+export const STAT_TILES_DEMO = { totalPnl: 101.49, winRate: 33.33, rr: 3.05, monthGL: 33.83, weekGL: 16.92, dailyGL: 12.69 };
 
 const styles = StyleSheet.create({
   row3: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },

@@ -4,6 +4,7 @@ import Svg, { Polyline } from 'react-native-svg';
 import { colors } from '../shared/theme';
 import { GlassCard, GhostBtn, ChromeBtn, IconButton, ConfirmDeleteRow, sharedStyles } from '../shared/UIKit';
 import { useToast } from '../shared/ToastProvider';
+import { toPolylinePoints } from '../shared/chartMath';
 
 /* width/height explicites obligatoires : sans elles, react-native-svg (surtout
    sur react-native-web) fait grandir le Svg pour remplir tout l'espace vertical
@@ -14,12 +15,15 @@ const StratMiniChart = ({ points }) => (
   </Svg>
 );
 
-/* data: { name, winRate, rr, totalTrades, equityPoints } */
+/* data: { name, winRate, rr, totalTrades, equityCurve } — equityCurve =
+   tableau brut de valeurs (ex: solde du compte trade après trade), pas une
+   chaîne de points SVG déjà calculée. */
 export const StrategyCard = ({ data, onEdit, onAnalytics, onDelete }) => {
   const [confirming, setConfirming] = useState(false);
+  const points = toPolylinePoints(data.equityCurve, { width: 160, height: 60, padding: 4 });
   return (
     <GlassCard delay={0} style={{ flex: 1 }}>
-      <StratMiniChart points={data.equityPoints} />
+      <StratMiniChart points={points} />
       <View style={styles.stratStatsRow}>
         <View><Text style={styles.stratStatVal}>{data.winRate}%</Text><Text style={styles.stratStatLbl}>Win rate</Text></View>
         <View style={{ alignItems: 'flex-end' }}><Text style={styles.stratStatVal}>{data.rr}</Text><Text style={styles.stratStatLbl}>RR</Text></View>
@@ -46,7 +50,7 @@ export const StrategyCard = ({ data, onEdit, onAnalytics, onDelete }) => {
 
 export const STRATEGY_DEMO = {
   name: '1R', winRate: 67.92, rr: 1.01, totalTrades: 53,
-  equityPoints: '0,50 20,42 40,38 60,30 80,25 100,20 120,15 140,10 160,8',
+  equityCurve: [10000, 10120, 10180, 10310, 10380, 10460, 10520, 10570, 10600],
 };
 
 const styles = StyleSheet.create({

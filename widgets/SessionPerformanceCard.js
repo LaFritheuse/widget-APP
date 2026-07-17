@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming, Easing } from 'react-native-reanimated';
 import { colors } from '../shared/theme';
 import { GlassCard, ScalePressable, sharedStyles } from '../shared/UIKit';
+import { formatR } from '../shared/format';
 
 /* Statistique classique des journaux de trading (performance par session
    Asia/London/New York). Interaction : un sélecteur segmenté avec
@@ -10,7 +11,8 @@ import { GlassCard, ScalePressable, sharedStyles } from '../shared/UIKit';
 const SESSIONS = ['Asia', 'London', 'New York'];
 const SEG_WIDTH = 88;
 
-/* data: { [session]: { winRate, trades, avgR } } */
+/* data: { [session]: { winRate, trades, avgR } } — avgR = NOMBRE brut
+   (ex: 1.4), mis en forme "1.40R" par le widget. */
 export const SessionPerformanceCard = ({ data, initialSession = 'London' }) => {
   const [active, setActive] = useState(initialSession);
   const indicatorX = useSharedValue(SESSIONS.indexOf(initialSession) * SEG_WIDTH);
@@ -46,7 +48,7 @@ export const SessionPerformanceCard = ({ data, initialSession = 'London' }) => {
           <Text style={styles.lbl}>Trades</Text>
         </View>
         <View style={{ alignItems: 'flex-end' }}>
-          <Text style={styles.val}>{stats.avgR}</Text>
+          <Text style={styles.val}>{formatR(stats.avgR)}</Text>
           <Text style={styles.lbl}>Avg R</Text>
         </View>
       </View>
@@ -55,9 +57,9 @@ export const SessionPerformanceCard = ({ data, initialSession = 'London' }) => {
 };
 
 export const SESSION_PERF_DEMO = {
-  Asia: { winRate: 48, trades: 22, avgR: '0.6R' },
-  London: { winRate: 71, trades: 54, avgR: '1.4R' },
-  'New York': { winRate: 59, trades: 38, avgR: '0.9R' },
+  Asia: { winRate: 48, trades: 22, avgR: 0.6 },
+  London: { winRate: 71, trades: 54, avgR: 1.4 },
+  'New York': { winRate: 59, trades: 38, avgR: 0.9 },
 };
 
 const styles = StyleSheet.create({

@@ -2,19 +2,21 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { colors } from '../shared/theme';
 import { GlassCard, sharedStyles } from '../shared/UIKit';
+import { formatSignedMoney, formatR } from '../shared/format';
 
 /* Statistiques classiques des apps de trading journal (profit factor,
-   expectancy, avg win/loss, best/worst trade) — même famille visuelle que
-   Stat Tiles (teinte claire + reflet centré). */
-/* data: { profitFactor, expectancy, avgWin, avgLoss, bestTrade, worstTrade } */
+   expectancy, avg win/loss, best/worst trade). */
+/* data: { profitFactor, expectancyR, avgWin, avgLoss, bestTrade, worstTrade }
+   — tous des NOMBRES bruts (avgLoss/worstTrade négatifs), le widget gère
+   seul le signe/$ et la couleur. */
 export const AdvancedStatsRow = ({ data }) => {
   const tiles = [
-    { label: 'Profit Factor', value: data.profitFactor },
-    { label: 'Expectancy', value: data.expectancy },
-    { label: 'Avg Win', value: data.avgWin, tone: 'up' },
-    { label: 'Avg Loss', value: data.avgLoss, tone: 'down' },
-    { label: 'Best Trade', value: data.bestTrade, tone: 'up' },
-    { label: 'Worst Trade', value: data.worstTrade, tone: 'down' },
+    { label: 'Profit Factor', value: data.profitFactor.toFixed(2) },
+    { label: 'Expectancy', value: formatR(data.expectancyR) },
+    { label: 'Avg Win', value: formatSignedMoney(data.avgWin), tone: 'up' },
+    { label: 'Avg Loss', value: formatSignedMoney(data.avgLoss), tone: 'down' },
+    { label: 'Best Trade', value: formatSignedMoney(data.bestTrade), tone: 'up' },
+    { label: 'Worst Trade', value: formatSignedMoney(data.worstTrade), tone: 'down' },
   ];
   return (
     <View style={styles.row3}>
@@ -29,7 +31,7 @@ export const AdvancedStatsRow = ({ data }) => {
 };
 
 export const ADVANCED_STATS_DEMO = {
-  profitFactor: '1.87', expectancy: '+0.42R', avgWin: '+$186.40', avgLoss: '-$79.20', bestTrade: '+$612.00', worstTrade: '-$210.50',
+  profitFactor: 1.87, expectancyR: 0.42, avgWin: 186.40, avgLoss: -79.20, bestTrade: 612.00, worstTrade: -210.50,
 };
 
 const styles = StyleSheet.create({

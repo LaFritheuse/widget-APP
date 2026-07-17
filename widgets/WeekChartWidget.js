@@ -5,6 +5,7 @@ import Animated, { useSharedValue, useAnimatedProps, withTiming, Easing } from '
 import { Dimensions } from 'react-native';
 import { colors } from '../shared/theme';
 import { ScalePressable, GlassCard, ChevronIcon, sharedStyles } from '../shared/UIKit';
+import { formatWeekRangeFr, dayLabelFr } from '../shared/format';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const AnimatedRect = Animated.createAnimatedComponent(Rect);
@@ -35,11 +36,17 @@ const AnimatedBar = ({ x, width, targetBaseValue, targetTopValue = 0, maxY, draw
   );
 };
 
-/* data: [{ label: string, points: [{ day, base, top?, isToday? }] }] */
+/* data: [{ weekStart: Date|ISO, values: [{base, top?}] (7 entrées, Dim→Sam) }]
+   — le widget calcule seul le libellé de semaine, les initiales des jours
+   et quelle colonne est "aujourd'hui" à partir de weekStart ; l'app n'a
+   jamais besoin de composer un texte de plage de dates ni de marquer
+   "isToday" à la main pour chaque semaine. */
 export const WeekChartWidget = ({ title, data, stacked, unit }) => {
   const [weekIdx, setWeekIdx] = useState(0);
   const week = data[weekIdx];
-  const maxVal = Math.max(...week.points.map((d) => (stacked ? d.base + (d.top || 0) : d.base)));
+  const weekStart = week.weekStart instanceof Date ? week.weekStart : new Date(week.weekStart);
+  const today = new Date();
+  const maxVal = Math.max(...week.values.map((d) => (stacked ? d.base + (d.top || 0) : d.base)));
   const currentMaxY = unit === '%' ? 100 : Math.max(10, Math.ceil(maxVal / 10) * 10);
   const CHART_W = SCREEN_WIDTH - 64, CHART_H = 160, Y_AXIS_W = 32, TOP_PAD = 14;
   const DRAW_H = CHART_H - 24 - TOP_PAD, DRAW_W = CHART_W - Y_AXIS_W, BAR_W = 20;
@@ -51,7 +58,7 @@ export const WeekChartWidget = ({ title, data, stacked, unit }) => {
         <ScalePressable disabled={weekIdx === data.length - 1} onPress={() => setWeekIdx(weekIdx + 1)} style={styles.navBtn}>
           <ChevronIcon direction="left" disabled={weekIdx === data.length - 1} />
         </ScalePressable>
-        <Text style={styles.weekLabel}>{week.label}</Text>
+        <Text style={styles.weekLabel}>{formatWeekRangeFr(weekStart)}</Text>
         <ScalePressable disabled={weekIdx === 0} onPress={() => setWeekIdx(weekIdx - 1)} style={styles.navBtn}>
           <ChevronIcon direction="right" disabled={weekIdx === 0} />
         </ScalePressable>
@@ -72,13 +79,16 @@ export const WeekChartWidget = ({ title, data, stacked, unit }) => {
             </G>
           );
         })}
-        {week.points.map((item, i) => {
+        {week.values.map((item, i) => {
           const stepX = DRAW_W / 7;
           const xPos = Y_AXIS_W + i * stepX + (stepX - BAR_W) / 2;
+          const cellDate = new Date(weekStart);
+          cellDate.setDate(weekStart.getDate() + i);
+          const isToday = cellDate.toDateString() === today.toDateString();
           return (
             <G key={`bar-${i}`}>
               <AnimatedBar x={xPos} width={BAR_W} targetBaseValue={item.base} targetTopValue={item.top || 0} maxY={currentMaxY} drawHeight={DRAW_H} topPadding={TOP_PAD} stacked={stacked} />
-              <SvgText x={xPos + BAR_W / 2} y={CHART_H - 2} fill={item.isToday ? colors.chrome : colors.textDim} fontSize="10" textAnchor="middle" fontWeight={item.isToday ? 'bold' : 'normal'}>{item.day}</SvgText>
+              <SvgText x={xPos + BAR_W / 2} y={CHART_H - 2} fill={isToday ? colors.chrome : colors.textDim} fontSize="10" textAnchor="middle" fontWeight={isToday ? 'bold' : 'normal'}>{dayLabelFr(cellDate)}</SvgText>
             </G>
           );
         })}
@@ -88,32 +98,29 @@ export const WeekChartWidget = ({ title, data, stacked, unit }) => {
 };
 
 export const TIME_INVESTED_WEEKS = [
-  { label: '12 juil. – 18 juil.', points: [
-    { day: 'Dim', base: 5, top: 22 }, { day: 'Lun', base: 12, top: 8 }, { day: 'Mar', base: 1, top: 0 },
-    { day: 'Mer', base: 15, top: 5 }, { day: 'Jeu', base: 38, top: 15, isToday: true }, { day: 'Ven', base: 22, top: 8 }, { day: 'Sam', base: 0, top: 0 },
+  { weekStart: '2026-07-12', values: [
+    { base: 5, top: 22 }, { base: 12, top: 8 }, { base: 1, top: 0 },
+    { base: 15, top: 5 }, { base: 38, top: 15 }, { base: 22, top: 8 }, { base: 0, top: 0 },
   ]},
-  { label: '5 juil. – 11 juil.', points: [
-    { day: 'Dim', base: 9, top: 8 }, { day: 'Lun', base: 9, top: 5 }, { day: 'Mar', base: 8, top: 4 },
-    { day: 'Mer', base: 8, top: 3 }, { day: 'Jeu', base: 10, top: 1, isToday: true }, { day: 'Ven', base: 14, top: 6 }, { day: 'Sam', base: 10, top: 4 },
+  { weekStart: '2026-07-05', values: [
+    { base: 9, top: 8 }, { base: 9, top: 5 }, { base: 8, top: 4 },
+    { base: 8, top: 3 }, { base: 10, top: 1 }, { base: 14, top: 6 }, { base: 10, top: 4 },
   ]},
-  { label: '28 juin – 4 juil.', points: [
-    { day: 'Dim', base: 12, top: 5 }, { day: 'Lun', base: 20, top: 10 }, { day: 'Mar', base: 35, top: 5 },
-    { day: 'Mer', base: 22, top: 8 }, { day: 'Jeu', base: 10, top: 3, isToday: true }, { day: 'Ven', base: 5, top: 0 }, { day: 'Sam', base: 25, top: 6 },
+  { weekStart: '2026-06-28', values: [
+    { base: 12, top: 5 }, { base: 20, top: 10 }, { base: 35, top: 5 },
+    { base: 22, top: 8 }, { base: 10, top: 3 }, { base: 5, top: 0 }, { base: 25, top: 6 },
   ]},
 ];
 
 export const WIN_RATE_WEEKS = [
-  { label: '12 juil. – 18 juil.', points: [
-    { day: 'Dim', base: 0 }, { day: 'Lun', base: 58 }, { day: 'Mar', base: 0 }, { day: 'Mer', base: 71 },
-    { day: 'Jeu', base: 82, isToday: true }, { day: 'Ven', base: 40 }, { day: 'Sam', base: 0 },
+  { weekStart: '2026-07-12', values: [
+    { base: 0 }, { base: 58 }, { base: 0 }, { base: 71 }, { base: 82 }, { base: 40 }, { base: 0 },
   ]},
-  { label: '5 juil. – 11 juil.', points: [
-    { day: 'Dim', base: 60 }, { day: 'Lun', base: 55 }, { day: 'Mar', base: 50 }, { day: 'Mer', base: 66 },
-    { day: 'Jeu', base: 72, isToday: true }, { day: 'Ven', base: 48 }, { day: 'Sam', base: 63 },
+  { weekStart: '2026-07-05', values: [
+    { base: 60 }, { base: 55 }, { base: 50 }, { base: 66 }, { base: 72 }, { base: 48 }, { base: 63 },
   ]},
-  { label: '28 juin – 4 juil.', points: [
-    { day: 'Dim', base: 44 }, { day: 'Lun', base: 70 }, { day: 'Mar', base: 90 }, { day: 'Mer', base: 65 },
-    { day: 'Jeu', base: 52, isToday: true }, { day: 'Ven', base: 30 }, { day: 'Sam', base: 78 },
+  { weekStart: '2026-06-28', values: [
+    { base: 44 }, { base: 70 }, { base: 90 }, { base: 65 }, { base: 52 }, { base: 30 }, { base: 78 },
   ]},
 ];
 

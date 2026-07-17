@@ -2,8 +2,10 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { colors } from '../shared/theme';
 import { GlassCard, GhostBtn, sharedStyles } from '../shared/UIKit';
+import { formatDateShort, formatSignedMoney } from '../shared/format';
 
-/* data: [{ name, symbol, date, roi }] */
+/* data: [{ name, symbol, date, roi }] — date = objet Date ou chaîne ISO
+   ("2026-03-22"), pas déjà formatée "22/03" ; roi = nombre brut. */
 export const RecentTradesTable = ({ data, onJournal }) => (
   <GlassCard delay={460}>
     <View style={sharedStyles.tableHeadRow}>
@@ -20,9 +22,9 @@ export const RecentTradesTable = ({ data, onJournal }) => (
       <View key={i} style={styles.tableRow}>
         <Text style={[styles.tdTxt, { flex: 1 }]}>{row.name}</Text>
         <Text style={[styles.tdTxt, { flex: 1.4 }]}>{row.symbol}</Text>
-        <Text style={[styles.tdTxt, { flex: 1 }]}>{row.date}</Text>
+        <Text style={[styles.tdTxt, { flex: 1 }]}>{formatDateShort(row.date)}</Text>
         <Text style={[styles.tdTxt, { flex: 1.2, textAlign: 'right', fontWeight: '800', color: row.roi >= 0 ? colors.green : colors.red }]}>
-          {row.roi >= 0 ? '+' : ''}${row.roi.toFixed(2)}
+          {formatSignedMoney(row.roi)}
         </Text>
       </View>
     ))}
@@ -30,9 +32,9 @@ export const RecentTradesTable = ({ data, onJournal }) => (
 );
 
 export const RECENT_TRADES_DEMO = [
-  { name: 'H4', symbol: 'EURUSD', date: '22/03', roi: 319.97 },
-  { name: 'H4', symbol: 'EURUSD', date: '01/03', roi: -98.80 },
-  { name: 'H4', symbol: 'EURUSD', date: '16/02', roi: -99.80 },
+  { name: 'H4', symbol: 'EURUSD', date: '2026-03-22', roi: 319.97 },
+  { name: 'H4', symbol: 'EURUSD', date: '2026-03-01', roi: -98.80 },
+  { name: 'H4', symbol: 'EURUSD', date: '2026-02-16', roi: -99.80 },
 ];
 
 const styles = StyleSheet.create({

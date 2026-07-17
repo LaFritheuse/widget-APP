@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { colors } from '../shared/theme';
 import { GlassCard, GhostBtn, Checkbox, sharedStyles } from '../shared/UIKit';
+import { daysAgo } from '../shared/format';
 
-/* data: { name, createdDaysAgo, items: [{ text, checked }] } */
+/* data: { name, createdAt, items: [{ text, checked }] } — createdAt = Date
+   ou chaîne ISO de création, pas un nombre de jours déjà calculé. */
 export const ChecklistCard = ({ data, onEdit, onToggleItem }) => (
   <GlassCard delay={0} style={{ flex: 1 }}>
     <View style={sharedStyles.tableHeadRow}>
       <View>
         <Text style={sharedStyles.srowName}>{data.name}</Text>
-        <Text style={styles.metaTxt}>Created {data.createdDaysAgo} days ago</Text>
+        <Text style={styles.metaTxt}>Created {daysAgo(data.createdAt)} days ago</Text>
       </View>
       <GhostBtn text="Edit" onPress={onEdit} />
     </View>
@@ -23,7 +25,7 @@ export const ChecklistCard = ({ data, onEdit, onToggleItem }) => (
 );
 
 export const CHECKLIST_DEMO = {
-  name: 'Checklist 1R', createdDaysAgo: 12,
+  name: 'Checklist 1R', createdAt: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000),
   items: [
     { text: 'Biais Daily identifié', checked: true },
     { text: 'Structure H1 dans le même sens que le biais', checked: true },

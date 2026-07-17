@@ -5,10 +5,14 @@ import { colors } from '../shared/theme';
 import { ScalePressable, GlassCard, GhostBtn, IconButton, ConfirmDeleteRow, sharedStyles } from '../shared/UIKit';
 import { Icon } from '../shared/Icons';
 import { useToast } from '../shared/ToastProvider';
+import { formatDateUS } from '../shared/format';
 
-/* data: { name, symbol, dateStart, dateEnd, remainingDays, progressPct } */
+/* data: { name, symbol, dateStart, dateEnd, totalDays, remainingDays } —
+   dates brutes (Date/ISO), et la progression est dérivée de totalDays et
+   remainingDays plutôt que fournie comme un pourcentage déjà calculé. */
 export const SessionRow = ({ data, onView, onPlay, onStats, onEdit, onCopy, onDelete }) => {
   const [confirming, setConfirming] = useState(false);
+  const progressPct = ((data.totalDays - data.remainingDays) / data.totalDays) * 100;
   return (
     <GlassCard delay={300}>
       <View style={styles.srow}>
@@ -17,7 +21,7 @@ export const SessionRow = ({ data, onView, onPlay, onStats, onEdit, onCopy, onDe
         </ScalePressable>
         <View style={{ flex: 1 }}>
           <Text style={sharedStyles.srowName}>{data.name}</Text>
-          <Text style={sharedStyles.srowMeta}>{data.symbol} · {data.dateStart} – {data.dateEnd}</Text>
+          <Text style={sharedStyles.srowMeta}>{data.symbol} · {formatDateUS(data.dateStart)} – {formatDateUS(data.dateEnd)}</Text>
         </View>
       </View>
 
@@ -38,7 +42,7 @@ export const SessionRow = ({ data, onView, onPlay, onStats, onEdit, onCopy, onDe
       />
 
       <View style={sharedStyles.progressTrack}>
-        <LinearGradient colors={[colors.silver1, colors.silver3]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={[sharedStyles.progressFill, { width: `${data.progressPct}%` }]} />
+        <LinearGradient colors={[colors.silver1, colors.silver3]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={[sharedStyles.progressFill, { width: `${progressPct}%` }]} />
       </View>
       <Text style={{ fontSize: 10.5, color: colors.textDim, marginTop: 6 }}>Remaining days: {data.remainingDays}</Text>
     </GlassCard>
@@ -46,8 +50,8 @@ export const SessionRow = ({ data, onView, onPlay, onStats, onEdit, onCopy, onDe
 };
 
 export const SESSION_ROW_DEMO = {
-  name: 'H4', symbol: 'EURUSD', dateStart: '01/15/2024', dateEnd: '02/13/2025',
-  remainingDays: 328, progressPct: 32,
+  name: 'H4', symbol: 'EURUSD', dateStart: '2024-01-15', dateEnd: '2025-02-13',
+  totalDays: 482, remainingDays: 328,
 };
 
 const styles = StyleSheet.create({

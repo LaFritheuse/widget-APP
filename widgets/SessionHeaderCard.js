@@ -2,8 +2,10 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { colors } from '../shared/theme';
 import { GlassCard, ChromeBtn, Pill, sharedStyles } from '../shared/UIKit';
+import { formatThousands } from '../shared/format';
 
-/* data: { name, strategy, symbol, balance, daysRemaining } */
+/* data: { name, strategy, symbol, balance, daysRemaining } — balance =
+   NOMBRE brut, mis en forme par le widget. */
 export const SessionHeaderCard = ({ data, onGoToChart }) => (
   <GlassCard delay={400}>
     <View style={sharedStyles.tableHeadRow}>
@@ -11,14 +13,14 @@ export const SessionHeaderCard = ({ data, onGoToChart }) => (
         <Text style={sharedStyles.srowName}>{data.name}</Text>
         <Text style={sharedStyles.srowMeta}>{data.strategy} · {data.symbol}</Text>
       </View>
-      <Text style={sharedStyles.bigValue}>{data.balance}</Text>
+      <Text style={sharedStyles.bigValue}>${formatThousands(data.balance)}</Text>
     </View>
     <View style={{ marginTop: 10, flexDirection: 'row' }}><Pill text={`${data.daysRemaining} days remaining`} tone="neutral" /></View>
     <ChromeBtn text="Go to chart →" style={{ marginTop: 14, alignSelf: 'flex-start' }} onPress={onGoToChart} />
   </GlassCard>
 );
 
-export const SESSION_HEADER_DEMO = { name: 'H4', strategy: 'No strategy', symbol: 'EURUSD', balance: '$10,101.49', daysRemaining: 328 };
+export const SESSION_HEADER_DEMO = { name: 'H4', strategy: 'No strategy', symbol: 'EURUSD', balance: 10101.49, daysRemaining: 328 };
 
 export default function SessionHeaderCardDemo() {
   return (

@@ -3,28 +3,48 @@ import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import Svg, { Rect, Line, Text as SvgText } from 'react-native-svg';
 import { colors } from '../shared/theme';
 import { GlassCard, sharedStyles } from '../shared/UIKit';
+import { formatR } from '../shared/format';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
+const BUCKET_DEFS = [
+  { label: '≤-2R', test: (r) => r <= -1.5, tone: 'down' },
+  { label: '-1R', test: (r) => r > -1.5 && r <= -0.5, tone: 'down' },
+  { label: '0R', test: (r) => r > -0.5 && r <= 0.5, tone: 'neutral' },
+  { label: '+1R', test: (r) => r > 0.5 && r <= 1.5, tone: 'up' },
+  { label: '+2R', test: (r) => r > 1.5 && r <= 2.5, tone: 'up' },
+  { label: '+3R', test: (r) => r > 2.5, tone: 'up' },
+];
+
 const toneColor = (tone) => (tone === 'up' ? colors.green : tone === 'down' ? colors.red : colors.silver2);
 
-/* data: { expectancy: string, buckets: [{ label, count, tone: 'up'|'down'|'neutral' }] } */
-export const RMultipleHistogram = ({ data }) => {
+/* Le widget calcule lui-même la distribution par tranche et l'expectancy —
+   l'app n'a qu'à fournir la liste brute des R-multiples de chaque trade
+   fermé, pas des buckets ou une expectancy déjà calculés. */
+/* rMultiples: number[] (ex: [1.2, -0.8, 2.1, -1.5, 0.3, ...]) */
+export const RMultipleHistogram = ({ rMultiples }) => {
+  const buckets = BUCKET_DEFS.map((b) => ({
+    label: b.label,
+    tone: b.tone,
+    count: rMultiples.filter(b.test).length,
+  }));
+  const expectancy = rMultiples.length ? rMultiples.reduce((sum, r) => sum + r, 0) / rMultiples.length : 0;
+
   const CHART_W = SCREEN_WIDTH - 64, CHART_H = 150, TOP_PAD = 16, X_AXIS_H = 20;
   const DRAW_H = CHART_H - X_AXIS_H - TOP_PAD;
-  const maxCount = Math.max(1, ...data.buckets.map((b) => b.count));
-  const stepX = CHART_W / data.buckets.length;
+  const maxCount = Math.max(1, ...buckets.map((b) => b.count));
+  const stepX = CHART_W / buckets.length;
   const barW = Math.min(30, stepX * 0.55);
 
   return (
     <GlassCard delay={0}>
       <View style={styles.head}>
         <Text style={[sharedStyles.cardLabel, { marginBottom: 0 }]}>R-MULTIPLE DISTRIBUTION</Text>
-        <Text style={styles.expectancy}>{data.expectancy}</Text>
+        <Text style={styles.expectancy}>Expectancy {formatR(expectancy)}</Text>
       </View>
       <Svg width={CHART_W} height={CHART_H}>
         <Line x1={0} x2={CHART_W} y1={TOP_PAD + DRAW_H} y2={TOP_PAD + DRAW_H} stroke={colors.cardBorder} strokeWidth={1} />
-        {data.buckets.map((b, i) => {
+        {buckets.map((b, i) => {
           const h = (b.count / maxCount) * DRAW_H;
           const x = i * stepX + (stepX - barW) / 2;
           const y = TOP_PAD + DRAW_H - h;
@@ -43,17 +63,12 @@ export const RMultipleHistogram = ({ data }) => {
   );
 };
 
-export const R_MULTIPLE_DEMO = {
-  expectancy: 'Expectancy +0.42R',
-  buckets: [
-    { label: '≤-2R', count: 3, tone: 'down' },
-    { label: '-1R', count: 9, tone: 'down' },
-    { label: '0R', count: 2, tone: 'neutral' },
-    { label: '+1R', count: 14, tone: 'up' },
-    { label: '+2R', count: 8, tone: 'up' },
-    { label: '+3R', count: 5, tone: 'up' },
-  ],
-};
+export const R_MULTIPLE_DEMO = [
+  1.2, -0.8, 2.1, -1.5, 0.3, 1.8, -2.2, 1.1, 0.9, -1.1,
+  2.6, -0.6, 1.4, 0.2, -1.8, 1.6, 3.1, -0.4, 1.0, 2.3,
+  -1.2, 0.8, 1.7, -0.9, 2.0, 1.3, -1.6, 0.5, 1.9, -0.7,
+  2.8, 1.5, -2.5, 0.1, 1.2,
+];
 
 const styles = StyleSheet.create({
   head: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 },
@@ -63,7 +78,7 @@ const styles = StyleSheet.create({
 export default function RMultipleHistogramDemo() {
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg, padding: 16, paddingTop: 60 }}>
-      <RMultipleHistogram data={R_MULTIPLE_DEMO} />
+      <RMultipleHistogram rMultiples={R_MULTIPLE_DEMO} />
     </View>
   );
 }

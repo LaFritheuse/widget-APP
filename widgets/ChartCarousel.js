@@ -4,6 +4,7 @@ import Svg, { Rect, Line, Polygon, Polyline, Defs, Stop, LinearGradient as SvgLi
 import Animated, { useSharedValue, useAnimatedProps, withTiming, Easing, withDelay } from 'react-native-reanimated';
 import { colors } from '../shared/theme';
 import { GlassCard, sharedStyles } from '../shared/UIKit';
+import { toPolylinePoints } from '../shared/chartMath';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const AnimatedPolyline = Animated.createAnimatedComponent(Polyline);
@@ -55,11 +56,13 @@ const DailyPerformanceChart = () => (
   </Svg>
 );
 
-/* data: { equityPoints: 'x,y x,y ...', monthly: [{month,gain,loss}], daily: [{day,value}] } */
+/* data: { equityCurve: number[] } — tableau brut de valeurs de solde, pas
+   une chaîne de points SVG déjà calculée. */
 export const ChartCarousel = ({ data }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const labels = ['Equity Curve', 'Monthly Performance', 'Daily Performance'];
   const slideW = SCREEN_WIDTH - 64;
+  const equityPoints = toPolylinePoints(data.equityCurve, { width: 300, height: 110, padding: 8 });
 
   return (
     <GlassCard delay={450}>
@@ -70,7 +73,7 @@ export const ChartCarousel = ({ data }) => {
         showsHorizontalScrollIndicator={false}
         onMomentumScrollEnd={(e) => setActiveIndex(Math.round(e.nativeEvent.contentOffset.x / slideW))}
       >
-        <View style={{ width: slideW, height: 110 }}><EquityCurveChart points={data.equityPoints} /></View>
+        <View style={{ width: slideW, height: 110 }}><EquityCurveChart points={equityPoints} /></View>
         <View style={{ width: slideW, height: 110 }}><MonthlyPerformanceChart /></View>
         <View style={{ width: slideW, height: 110 }}><DailyPerformanceChart /></View>
       </ScrollView>
@@ -82,7 +85,7 @@ export const ChartCarousel = ({ data }) => {
 };
 
 export const CHART_CAROUSEL_DEMO = {
-  equityPoints: '0,55 26,18 53,40 79,30 106,65 132,82 159,95 185,100 212,86 238,52 265,30 300,40',
+  equityCurve: [10000, 9945, 9982, 9930, 10065, 9938, 9820, 9705, 9786, 10020, 10182, 10064],
 };
 
 export default function ChartCarouselDemo() {

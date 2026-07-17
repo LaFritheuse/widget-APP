@@ -2,11 +2,15 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { colors } from '../shared/theme';
 import { GlassCard, sharedStyles } from '../shared/UIKit';
+import { Icon } from '../shared/Icons';
 
 /* data: { value } */
 export const WinRateCard = ({ data, style }) => (
   <GlassCard delay={150} style={style}>
-    <Text style={sharedStyles.cardLabel}>🏆 OVERALL WIN RATE</Text>
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
+      <Icon name="award" size={11} color={colors.textDim} />
+      <Text style={[sharedStyles.cardLabel, { marginBottom: 0 }]}>OVERALL WIN RATE</Text>
+    </View>
     <Text style={[sharedStyles.bigValue, { marginTop: 6 }]}>{data.value}%</Text>
   </GlassCard>
 );

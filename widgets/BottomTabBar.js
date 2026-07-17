@@ -3,6 +3,7 @@ import { View, Text, Pressable, StyleSheet } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming, withSequence, Easing } from 'react-native-reanimated';
 import { BlurView } from 'expo-blur';
 import { colors } from '../shared/theme';
+import { Icon } from '../shared/Icons';
 import { useToast } from '../shared/ToastProvider';
 
 const TAB_ITEM_WIDTH = 56;
@@ -29,17 +30,17 @@ const TabIconComponent = ({ icon, isActive, animType }) => {
 
   return (
     <Animated.View style={[styles.tabIconBox, animatedStyle]}>
-      <Text style={styles.tabIcon}>{icon}</Text>
+      <Icon name={icon} size={16} color={isActive ? colors.silver1 : colors.textDim} />
     </Animated.View>
   );
 };
 
 export const TAB_DEFS = [
-  { id: 'Dashboard', icon: '🏠', anim: 'pulse' },
-  { id: 'Sessions', icon: '📁', anim: 'shake' },
-  { id: 'Strategies', icon: '🔄', anim: 'spin' },
-  { id: 'Checklists', icon: '✅', anim: 'check' },
-  { id: 'Analytics', icon: '📊', anim: 'bars' },
+  { id: 'Dashboard', icon: 'home', anim: 'pulse' },
+  { id: 'Sessions', icon: 'folder', anim: 'shake' },
+  { id: 'Strategies', icon: 'refresh', anim: 'spin' },
+  { id: 'Checklists', icon: 'check', anim: 'check' },
+  { id: 'Analytics', icon: 'stats', anim: 'bars' },
 ];
 
 export const BottomTabBar = ({ activeTab, onTabPress }) => {
@@ -71,7 +72,6 @@ const styles = StyleSheet.create({
   tabbar: { flexDirection: 'row', backgroundColor: 'rgba(18,19,22,0.6)', borderRadius: 99, padding: 6, borderWidth: 1, borderColor: 'rgba(255,255,255,0.09)', overflow: 'hidden' },
   tabItem: { width: TAB_ITEM_WIDTH, alignItems: 'center', paddingVertical: 8, zIndex: 2 },
   tabIconBox: { width: 20, height: 20, alignItems: 'center', justifyContent: 'center', marginBottom: 4 },
-  tabIcon: { fontSize: 13, textAlign: 'center', lineHeight: 20 },
   tabLabel: { fontSize: 8, fontWeight: '700', color: colors.textDim },
   tabIndicator: { position: 'absolute', top: 6, bottom: 6, left: 6, width: TAB_ITEM_WIDTH, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 99, zIndex: 1 },
 });

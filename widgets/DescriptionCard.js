@@ -9,7 +9,7 @@ export const DescriptionCard = ({ data, onEdit }) => (
   <GlassCard delay={430}>
     <View style={sharedStyles.tableHeadRow}>
       <Text style={[sharedStyles.cardLabel, { marginBottom: 0 }]}>DESCRIPTION</Text>
-      <IconButton icon="✏️" onPress={onEdit} />
+      <IconButton icon="edit" onPress={onEdit} />
     </View>
     <Text style={sharedStyles.descTxt}>{data.text}</Text>
   </GlassCard>

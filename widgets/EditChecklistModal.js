@@ -19,7 +19,7 @@ export const EditChecklistModal = ({ visible, data, onClose, onSave }) => {
     <BottomModal visible={visible} onClose={onClose}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
         <Text style={{ fontSize: 17, fontWeight: '800', color: '#fff' }}>Edit Checklist</Text>
-        <IconButton icon="✕" onPress={onClose} size={28} />
+        <IconButton icon="close" onPress={onClose} size={28} />
       </View>
       <Text style={sharedStyles.fieldLabel}>Name</Text>
       <TextInput style={sharedStyles.fieldInput} value={name} onChangeText={setName} placeholderTextColor={colors.textDim} />
@@ -34,7 +34,7 @@ export const EditChecklistModal = ({ visible, data, onClose, onSave }) => {
           <Text style={{ fontSize: 12.5, color: '#fff', flex: 1 }}>{item.text}</Text>
           <Text style={{ fontSize: 10, color: colors.textDim }}>Required?</Text>
           <Toggle on={item.required} onToggle={() => toggleRequired(i)} />
-          <IconButton icon="🗑️" danger size={26} onPress={() => removeItem(i)} />
+          <IconButton icon="trash" danger size={26} onPress={() => removeItem(i)} />
         </View>
       ))}
       <View style={sharedStyles.modalActions}>

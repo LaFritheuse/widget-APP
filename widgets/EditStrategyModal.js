@@ -13,7 +13,7 @@ export const EditStrategyModal = ({ visible, data, onClose, onSave }) => {
     <BottomModal visible={visible} onClose={onClose}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
         <Text style={{ fontSize: 17, fontWeight: '800', color: '#fff' }}>Edit Strategy</Text>
-        <IconButton icon="✕" onPress={onClose} size={28} />
+        <IconButton icon="close" onPress={onClose} size={28} />
       </View>
       <Text style={sharedStyles.fieldLabel}>Name</Text>
       <TextInput style={sharedStyles.fieldInput} value={name} onChangeText={setName} placeholderTextColor={colors.textDim} />

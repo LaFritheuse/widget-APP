@@ -31,7 +31,7 @@ export const StrategyCard = ({ data, onEdit, onAnalytics, onDelete }) => {
         <View style={[styles.srowActions, { marginTop: 10 }]}>
           <GhostBtn text="Edit" onPress={onEdit} style={{ flex: 1 }} />
           <ChromeBtn text="Analytics" onPress={onAnalytics} style={{ flex: 1 }} />
-          <IconButton icon="🗑️" danger onPress={() => setConfirming(true)} />
+          <IconButton icon="trash" danger onPress={() => setConfirming(true)} />
         </View>
       )}
       <ConfirmDeleteRow

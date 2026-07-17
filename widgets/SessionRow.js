@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { colors } from '../shared/theme';
 import { ScalePressable, GlassCard, GhostBtn, IconButton, ConfirmDeleteRow, sharedStyles } from '../shared/UIKit';
+import { Icon } from '../shared/Icons';
 import { useToast } from '../shared/ToastProvider';
 
 /* data: { name, symbol, dateStart, dateEnd, remainingDays, progressPct } */
@@ -12,7 +13,7 @@ export const SessionRow = ({ data, onView, onPlay, onStats, onEdit, onCopy, onDe
     <GlassCard delay={300}>
       <View style={styles.srow}>
         <ScalePressable onPress={onPlay} style={styles.playBtnWrap}>
-          <LinearGradient colors={[colors.silver1, colors.silver2]} style={styles.playBtn}><Text style={{ fontSize: 12 }}>▶️</Text></LinearGradient>
+          <LinearGradient colors={[colors.silver1, colors.silver2]} style={styles.playBtn}><Icon name="play" size={13} color="#0a0a0b" /></LinearGradient>
         </ScalePressable>
         <View style={{ flex: 1 }}>
           <Text style={sharedStyles.srowName}>{data.name}</Text>
@@ -23,10 +24,10 @@ export const SessionRow = ({ data, onView, onPlay, onStats, onEdit, onCopy, onDe
       {!confirming && (
         <View style={styles.srowActions}>
           <GhostBtn text="View Session" onPress={onView} />
-          <IconButton icon="📊" onPress={onStats} />
-          <IconButton icon="✏️" onPress={onEdit} />
-          <IconButton icon="📋" onPress={onCopy} />
-          <IconButton icon="🗑️" danger onPress={() => setConfirming(true)} />
+          <IconButton icon="stats" onPress={onStats} />
+          <IconButton icon="edit" onPress={onEdit} />
+          <IconButton icon="copy" onPress={onCopy} />
+          <IconButton icon="trash" danger onPress={() => setConfirming(true)} />
         </View>
       )}
       <ConfirmDeleteRow
@@ -63,7 +64,7 @@ export default function SessionRowDemo() {
       <SessionRow
         data={SESSION_ROW_DEMO}
         onView={() => {}}
-        onPlay={() => showToast('Session lancée ▶️')}
+        onPlay={() => showToast('Session lancée ▶')}
         onStats={() => showToast('Analytics ouvertes')}
         onEdit={() => showToast('Mode édition')}
         onCopy={() => showToast('Session dupliquée')}

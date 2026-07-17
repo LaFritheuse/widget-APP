@@ -6,6 +6,7 @@ import Animated, {
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { colors } from './theme';
+import { Icon } from './Icons';
 
 /* ============================================================
    UIKit — logique de bouton (ripple + scale) et de carte "verre"
@@ -94,10 +95,12 @@ export const Pill = ({ text, tone }) => {
   return <View style={[styles.pill, { backgroundColor: bg }]}><Text style={[styles.pillText, { color }]}>{text}</Text></View>;
 };
 
+/* `icon` = nom d'icône du set partagé (shared/Icons.js), pas un caractère
+   emoji — garde un rendu monochrome cohérent avec la DA verre/chrome. */
 export const IconButton = ({ icon, danger, onPress, size = 32 }) => (
   <ScalePressable onPress={onPress}>
     <View style={[styles.iconBtn, { width: size, height: size, borderRadius: size / 2 }]}>
-      <Text style={[styles.iconBtnText, danger && { color: colors.red }]}>{icon}</Text>
+      <Icon name={icon} size={Math.round(size * 0.5)} color={danger ? colors.red : colors.silver2} />
     </View>
   </ScalePressable>
 );
@@ -229,7 +232,6 @@ const styles = StyleSheet.create({
   btnGhost: { backgroundColor: 'rgba(255,255,255,0.06)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)', paddingVertical: 10, paddingHorizontal: 16, borderRadius: 99 },
   btnGhostText: { color: colors.silver1, fontSize: 12, fontWeight: '700' },
   iconBtn: { backgroundColor: 'rgba(255,255,255,0.04)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.07)', justifyContent: 'center', alignItems: 'center' },
-  iconBtnText: { color: colors.silver2, fontSize: 14 },
   checkbox: { width: 18, height: 18, borderRadius: 5, borderWidth: 1, borderColor: 'rgba(255,255,255,0.25)', backgroundColor: 'rgba(255,255,255,0.05)', justifyContent: 'center', alignItems: 'center' },
   checkboxChecked: { backgroundColor: colors.silver1, borderColor: 'transparent' },
   checkboxMark: { fontSize: 11, color: '#0a0a0b', fontWeight: '800' },
